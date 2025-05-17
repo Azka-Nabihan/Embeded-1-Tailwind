@@ -11,6 +11,8 @@ string_speed:
     .ascii "Speed: \0"
 string_high:
     .ascii "HIGH\0"
+string_medium:
+    .ascii "MEDIUM\0"
 string_low:
     .ascii "LOW\0"
 
@@ -116,12 +118,20 @@ speed_done:
 
 display_speed_value:
     ; Check temperature threshold (R21 contains temperature integer)
-    cpi R21, 25
-    brlo display_low   ; If temperature < 25, display "LOW"
+    cpi R21, 30
+    brsh display_high       ; if temperature >= 30, display "HIGH"
+    cpi R21, 20
+    brsh display_medium     ; if temperature 20 <= x < 30, display "MEDIUM"
+    brlo display_low        ; If temperature < 20, display "LOW"
     
 display_high:
     ldi R30, lo8(string_high)
     ldi R31, hi8(string_high)
+    rjmp display_speed_string
+
+display_medium:
+    ldi R30, lo8(string_medium)
+    ldi R31, hi8(string_medium)
     rjmp display_speed_string
 
 display_low:
@@ -333,20 +343,30 @@ spin_motor:
     ldi R28, 0b00011010     
     sts TCCR1B, R28         ; fast pwm mode, prescaler 8
 
-    cpi R21, 25
+    ldi R28, 0
+    sts OCR1AH, R28
+    ldi R28, 255
+    sts OCR1AL, R28
+
+    cpi R21, 30
     brsh full_speed
-    brlo half_speed
+    cpi R21, 20
+    brsh medium_speed
+    brlo low_speed
 
 full_speed:
     ldi R28, 255
-    sbi PORTC, 1            ; turn on LED if full speed
-    sts OCR1BL, R28
+    sts OCR1BL, R28         ; fan at 100% speed
     RET
 
-half_speed:
+medium_speed:
     ldi R28, 128
-    cbi PORTC, 1            ; turn off LED if half speed
-    sts OCR1BL, R28
+    sts OCR1BL, R28         ; fan at 50% speed
+    RET
+
+low_speed:
+    ldi R28, 64
+    sts OCR1BL, R28         ; fan at 25% speed
     RET
 
 ;=========================================================================== delay routines
