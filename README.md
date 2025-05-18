@@ -47,6 +47,7 @@ arduino.
 ![FOTO3](https://imgur.com/kw66c3s.png)
 
 - FLOWCHART
+
 ![FOTO4](https://imgur.com/BxqT6l8.png)
 
 EXPLANATION:
@@ -68,7 +69,7 @@ pin PD4 - PD7 pada arduino uno.
 akurat guna menunjang kerja dari sensor, LCD, dan kecepatan motor. Delay yang digunakan sebesar 50 mikrosekon. Walaupun tidak semua delay menggunakan timer.
 
 - Terdapat rangkaian LCD LCD untuk menampilkan 
-informasi suhu yang terbaca pada sensor serta mode kecepatan dari motor DC ( SLOW, MEDIUM dan HIGH), tergantung putaran dari motor DC
+informasi suhu yang terbaca pada sensor serta mode kecepatan dari motor DC (SLOW, MEDIUM dan HIGH), tergantung putaran dari motor DC
 
 - Sensor yang digunakan adalah sensor DT11. Sensor DHT11 merupakan sensor suhu dan 
 kelembaban berbasis digital. Ketika DT11 dinyalakan akan ada delay selama 2 detik sebelum melakukan inisiasi. Jika suhu yang terbaca 
